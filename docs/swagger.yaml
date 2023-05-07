@@ -1,0 +1,94 @@
+definitions:
+  common.DefaultResponse:
+    properties:
+      data: {}
+      developerMessage:
+        type: string
+      http_status:
+        type: string
+      resultCode:
+        type: string
+      total:
+        type: integer
+    type: object
+  dto.CreateBankDto:
+    properties:
+      bankCode:
+        type: string
+      bankName:
+        type: string
+      userInserted:
+        type: string
+    required:
+    - bankCode
+    - bankName
+    type: object
+info:
+  contact: {}
+paths:
+  /bank/create:
+    post:
+      consumes:
+      - application/json
+      description: create new bank
+      parameters:
+      - description: bank
+        in: body
+        name: bank
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateBankDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: create bank
+      tags:
+      - banks
+  /bank/q:
+    post:
+      consumes:
+      - application/json
+      description: Get all the existing banks
+      parameters:
+      - description: bank
+        in: body
+        name: bankDto
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateBankDto'
+      - description: page Index
+        in: query
+        maximum: 10
+        minimum: 1
+        name: pageIndex
+        type: integer
+      - description: page Size
+        in: query
+        maximum: 10
+        minimum: 1
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/common.DefaultResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: List existing banks
+      tags:
+      - banks
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
