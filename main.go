@@ -34,13 +34,17 @@ func main() {
 	// if err != nil {
 	// 	log.Fatalf("sentry.Init: %s", err)
 	// }
-	config, _ := utils.LoadConfig("./")
+	config, err := utils.LoadConfig("./")
+	if err != nil {
+		panic(err)
+	}
+
 	docs.SwaggerInfo.Title = "Celestial - Monggo API"
 	docs.SwaggerInfo.Description = "Celestial - Monggo  API."
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:3000"
+	docs.SwaggerInfo.Host = config.AppHost
 	docs.SwaggerInfo.BasePath = ""
-	docs.SwaggerInfo.Schemes = []string{"http"}
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	db := database.GetConnection(ctx, config)
 	// collectionBank =db.
