@@ -14,6 +14,13 @@ type Config struct {
 	Database   string `mapstructure:"DATABASE"`
 	Dbuser     string `mapstructure:"DBUSER"`
 	Dbpassword string `mapstructure:"DBPASSWORD"`
+
+	AppHost string `mapstructure:"APP_HOST"`
+
+	MongoDBHost string `mapstructure:"MONGO_DB_HOST"`
+	MongoDBPort string `mapstructure:"MONGO_DB_PORT"`
+	MongoDBUser string `mapstructure:"MONGO_DB_USER"`
+	MongoDBPass string `mapstructure:"MONGO_DB_PASS"`
 }
 
 // LoadConfig reads configuration from file or environment variables.

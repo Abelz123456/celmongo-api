@@ -1,7 +1,9 @@
 package database
 
 import (
+	"context"
 	"database/sql"
+	"fmt"
 	"log"
 
 	"github.com/celmonggo-api/utils"
@@ -11,12 +13,20 @@ import (
 )
 
 func GetConnection(ctx *gin.Context, config utils.Config) (db *mongo.Client) {
-
-	mongoconn := options.Client().ApplyURI("mongodb://localhost:27017/")
+	mongoDSN := fmt.Sprintf("mongodb://%s:%s@%s:%s", config.MongoDBUser, config.MongoDBPass, config.MongoDBHost, config.MongoDBPort)
+	mongoconn := options.Client().ApplyURI(mongoDSN)
 	db, err := mongo.Connect(ctx, mongoconn)
 	if err != nil {
 		log.Fatal("cannot connect to db:", err)
 	}
+
+	_ctx := context.Background()
+	if err = db.Ping(_ctx, nil); err != nil {
+		log.Fatalf("cannot connect to: %s [%v]", mongoDSN, err)
+		return nil
+	}
+
+	_ctx.Done()
 	return db
 }
 
